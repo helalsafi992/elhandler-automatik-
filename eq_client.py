@@ -9,7 +9,7 @@ eq = EnergyQuantified(api_key=API_KEY)
 def get_forecast(curve_name: str, zone="DK1"):
     target_date = date.today() + timedelta(days=2)
     timeseries = eq.timeseries.load(
-        curve=f"{zone} {curve_name} MWh/h 15min Forecast.4",
+        curve=f"{zone} {curve_name} MWh/h 15min Forecast",
         begin=target_date,
         end=target_date
     )
