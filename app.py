@@ -1,53 +1,46 @@
-# app.py (hovedfil til Render)
+# app.py
 from flask import Flask, render_template, request, redirect
-import os
+import pandas as pd
+from run_forecast import run_model
 import json
-from datetime import datetime
-from run_forecast import run_strategy
+import os
 
 app = Flask(__name__)
 
-MEMORY_FILE = "memory.json"
-
-# Sørg for at fil findes
-if not os.path.exists(MEMORY_FILE):
-    with open(MEMORY_FILE, "w") as f:
-        json.dump([], f)
+LOG_FILE = "latest_trade.json"
+RULE_FILE = "trade_rules.json"
 
 @app.route("/")
 def index():
-    with open(MEMORY_FILE) as f:
-        memory = json.load(f)
-    latest = memory[-1] if memory else None
-    return render_template("index.html", latest=latest)
+    trade = {}
+    if os.path.exists(LOG_FILE):
+        with open(LOG_FILE, "r") as f:
+            trade = json.load(f)
+    return render_template("index.html", trade=trade)
 
 @app.route("/run")
 def run():
-    result = run_strategy()
-    with open(MEMORY_FILE) as f:
-        memory = json.load(f)
-    memory.append({"timestamp": datetime.now().isoformat(), **result})
-    with open(MEMORY_FILE, "w") as f:
-        json.dump(memory, f, indent=2)
+    result = run_model()
+    with open(LOG_FILE, "w") as f:
+        json.dump(result or {}, f)
     return redirect("/")
 
 @app.route("/rules", methods=["GET", "POST"])
 def rules():
     if request.method == "POST":
-        rules = {
+        new_rules = {
             "min_spread": float(request.form["min_spread"]),
-            "allowed_buy_hours": request.form["allowed_buy_hours"].split(",")
+            "allowed_buy_hours": list(map(int, request.form.getlist("allowed_buy_hours")))
         }
-        with open("rules.json", "w") as f:
-            json.dump(rules, f, indent=2)
-        return redirect("/")
-    else:
-        if os.path.exists("rules.json"):
-            with open("rules.json") as f:
-                rules = json.load(f)
-        else:
-            rules = {"min_spread": 8.0, "allowed_buy_hours": ["0", "1", "2", "3", "4", "12", "13", "14"]}
-        return render_template("rules.html", rules=rules)
+        with open(RULE_FILE, "w") as f:
+            json.dump(new_rules, f)
+        return redirect("/rules")
+
+    rules = {"min_spread": 10.0, "allowed_buy_hours": list(range(24))}
+    if os.path.exists(RULE_FILE):
+        with open(RULE_FILE, "r") as f:
+            rules = json.load(f)
+    return render_template("rules.html", rules=rules)
 
 if __name__ == "__main__":
     app.run(debug=True)
