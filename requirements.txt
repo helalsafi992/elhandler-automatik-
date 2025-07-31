@@ -1,2 +1,2 @@
-energyquantified==0.17.0
+energyquantified==0.14.6
 pandas
