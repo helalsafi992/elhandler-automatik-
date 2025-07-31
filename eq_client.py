@@ -11,7 +11,8 @@ def get_forecast(curve_name: str):
     if not instances:
         raise ValueError(f"No instances found for curve: {curve_name}")
     
-    print(f"▶ Fik instans: {instances[0]}")
-    print(f"▶ Felter: {dir(instances[0])}")
-
-    raise Exception("Stop her – vi tjekker felter først.")
+    instance = instances[0]  # ← allerede et komplet objekt
+    df = instance.to_dataframe()
+    df = df.resample("1H").mean().reset_index()
+    df["Hour"] = df["date"].dt.hour
+    return df[["Hour", "value"]]
