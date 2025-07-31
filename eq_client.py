@@ -11,14 +11,14 @@ def list_eq_curves():
     for c in curves:
         print(c.name)
 
-def get_forecast(curve_name: str, zone="DK1"):
+def get_forecast(curve_name: str):
     target_date = date.today() + timedelta(days=2)
     timeseries = eq.timeseries.load(
-        curve = curve_name  # bruger direkte det du giver den
+        curve=curve_name,
         begin=target_date,
         end=target_date
     )
     df = timeseries.to_dataframe()
     df = df.resample("1H").mean().reset_index()
     df["Hour"] = df["date"].dt.hour
-    return df[["Hour", "value"]].rename(columns={"value": curve_name})
+    return df[["Hour", "value"]]
