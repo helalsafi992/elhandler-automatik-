@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+    <title>Handelsregler</title>
+</head>
+<body>
+    <h1>Opdater handelsregler</h1>
+    <form method="post">
+        <label>Min. spread:</label>
+        <input type="number" name="min_spread" step="0.1" value="{{ rules.min_spread }}"><br><br>
+        <label>Tilladte køb-tidspunkter (hold CTRL for flere):</label><br>
+        <select name="allowed_buy_hours" multiple size="10">
+            {% for hour in range(24) %}
+                <option value="{{ hour }}"
+                    {% if hour in rules.allowed_buy_hours %}selected{% endif %}>
+                    {{ hour }}:00
+                </option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" value="Gem regler">
+    </form>
+    <a href="/">Tilbage</a>
+</body>
+</html>
