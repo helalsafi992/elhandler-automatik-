@@ -9,3 +9,12 @@ def fetch_latest_forecast(path: str) -> pd.DataFrame:
     df = df.set_index("date").resample("1H").mean().reset_index()
     df["Hour"] = df["date"].dt.hour
     return df[["Hour", "value"]]
+import pandas as pd
+import numpy as np
+
+def get_forecast():
+    # Dummy-data: ResidualLoad for 24 timer
+    df = pd.DataFrame({
+        "ResidualLoad": np.random.randint(1000, 2000, size=24)
+    })
+    return df
