@@ -15,11 +15,7 @@ def list_eq_curves():
             print(f"✅ {c.name} [{c.curve_type}]")
             
 def get_forecast(curve_name: str):
-    target_date = date.today() + timedelta(days=2)
-    instance = eq.instances.load(
-        curve=curve_name,
-        date=target_date
-    )
+    instance = eq.instances.get_latest(curve_name)
     df = instance.to_dataframe()
     df = df.resample("1H").mean().reset_index()
     df["Hour"] = df["date"].dt.hour
