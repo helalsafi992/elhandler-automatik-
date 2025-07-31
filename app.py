@@ -1,4 +1,5 @@
 # app.py
+from strategy_engine import run_model
 from flask import Flask, render_template, request, redirect
 import pandas as pd
 print("App is running")
