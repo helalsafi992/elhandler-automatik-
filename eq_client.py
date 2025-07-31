@@ -16,12 +16,11 @@ def list_eq_curves():
             
 def get_forecast(curve_name: str):
     target_date = date.today() + timedelta(days=2)
-    timeseries = eq.instances.load(
+    instance = eq.instances.load(
         curve=curve_name,
-        begin=target_date,
-        end=target_date
+        date=target_date
     )
-    df = timeseries.to_dataframe()
+    df = instance.to_dataframe()
     df = df.resample("1H").mean().reset_index()
     df["Hour"] = df["date"].dt.hour
     return df[["Hour", "value"]]
