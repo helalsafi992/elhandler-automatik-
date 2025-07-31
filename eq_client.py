@@ -6,6 +6,11 @@ from datetime import date, timedelta
 API_KEY = os.getenv("EQ_API_KEY")
 eq = EnergyQuantified(api_key=API_KEY)
 
+def list_eq_curves():
+    curves = eq.metadata.curves(q="dk1 forecast")
+    for c in curves:
+        print(c.name)
+
 def get_forecast(curve_name: str, zone="DK1"):
     target_date = date.today() + timedelta(days=2)
     timeseries = eq.timeseries.load(
