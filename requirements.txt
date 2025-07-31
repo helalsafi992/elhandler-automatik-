@@ -1,2 +1,3 @@
 pandas
 energyquantified
+energyquantified==0.17.0
