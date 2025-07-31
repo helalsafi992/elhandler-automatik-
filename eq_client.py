@@ -1,7 +1,7 @@
-from energyquantified import EnergyQuantified
-from datetime import date, timedelta
-import pandas as pd
 import os
+from energyquantified import EnergyQuantified
+import pandas as pd
+from datetime import date, timedelta
 
 API_KEY = os.getenv("EQ_API_KEY")
 eq = EnergyQuantified(api_key=API_KEY)
