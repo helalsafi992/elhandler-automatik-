@@ -14,7 +14,7 @@ def list_eq_curves():
 def get_forecast(curve_name: str, zone="DK1"):
     target_date = date.today() + timedelta(days=2)
     timeseries = eq.timeseries.load(
-        curve = curve_name  # bruger direkte det du giver den,
+        curve = curve_name  # bruger direkte det du giver den
         begin=target_date,
         end=target_date
     )
