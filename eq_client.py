@@ -14,7 +14,7 @@ def list_eq_curves():
 def get_forecast(curve_name: str, zone="DK1"):
     target_date = date.today() + timedelta(days=2)
     timeseries = eq.timeseries.load(
-        curve=f"{zone} {curve_name} MWh/h 15min Forecast",
+        curve = curve_name  # bruger direkte det du giver den,
         begin=target_date,
         end=target_date
     )
