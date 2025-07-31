@@ -11,10 +11,11 @@ def get_forecast(curve_name: str):
     if not instances:
         raise ValueError(f"No instances found for curve: {curve_name}")
     
-    latest_instance_id = instances[0].id
+    latest_instance_id = instances[0].instance_id  # <-- her er forskellen!
     instance = eq.instances.load_instance(instance_id=latest_instance_id)
     
     df = instance.to_dataframe()
     df = df.resample("1H").mean().reset_index()
     df["Hour"] = df["date"].dt.hour
     return df[["Hour", "value"]]
+
