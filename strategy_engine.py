@@ -14,3 +14,10 @@ def find_best_trade(df):
     if best["spread"] >= 50:  # eksempelregel – kan flyttes til rules.json
         return best
     return None
+import pandas as pd
+from forecast_engine import get_forecast  # eller tilpas til hvor forecast kommer fra
+
+def run_model():
+    df = get_forecast()  # hent dataframe med ResidualLoad pr. time
+    result = find_best_trade(df)
+    return result
