@@ -9,12 +9,13 @@ def run_model(zone):
 
     # Gyldige kurver til EQ v0.14.6 og timeseries.load()
     curve_map = {
-    "Wind": "Forecasts DK1 Wind Power MWh/h",
-    "Solar": "Forecasts DK1 Solar Power MWh/h",
-    "Consumption": "Forecasts DK1 Consumption MWh/h",
-    "ResidualLoad": "Forecasts DK1 Residual Load MWh/h",
-    "Temperature": "Forecasts DK1 Temperature °C"
+    "Wind": "DK1 Wind Power Production MWh/h 15min Forecast",
+    "Solar": "DK1 Solar Photovoltaic Production MWh/h 15min Forecast",
+    "Consumption": "DK1 Consumption MWh/h 15min Forecast",
+    "ResidualLoad": "DK1 Residual Load MWh/h 15min Forecast",
+    "Temperature": "DK1 Consumption Temperature °C 15min Forecast"
 }
+
 
     for var, curve in curve_map.items():
         fc = get_forecast(curve)
