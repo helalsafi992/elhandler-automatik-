@@ -9,8 +9,9 @@ eq = EnergyQuantified(api_key=API_KEY)
 def list_eq_curves():
     curves = eq.metadata.curves(q="dk1 forecast")
     for c in curves:
-        if hasattr(c, "details") and c.details.get("type") in ["TIMESERIES", "SCENARIO_TIMESERIES"]:
-            print(f"{c.name} [{c.details.get('type')}]")
+        data = c.to_dict()
+        if data.get("type") in ["TIMESERIES", "SCENARIO_TIMESERIES"]:
+            print(f"{data['name']} [{data['type']}]")
 
 def get_forecast(curve_name: str):
     target_date = date.today() + timedelta(days=2)
