@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+    <title>Seneste elhandel</title>
+</head>
+<body>
+    <h1>Seneste handel</h1>
+    {% if trade %}
+        <ul>
+            {% for key, value in trade.items() %}
+                <li><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ingen handel er foretaget endnu.</p>
+    {% endif %}
+    <a href="/run">Kør ny handel</a><br>
+    <a href="/rules">Rediger regler</a>
+</body>
+</html>
