@@ -1,0 +1,5 @@
+services: []
+cron:
+  - name: daily-elhandler
+    schedule: "0 8 * * *"  # UTC = 10:00 DK tid
+    command: "python main.py"
