@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, render_template, request, redirect
 import pandas as pd
-from run_forecast import run_model
+print("App is running")
 import json
 import os
 
