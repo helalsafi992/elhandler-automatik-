@@ -1,4 +1,36 @@
-# strategy_engine.py
+import boto3
+import pandas as pd
+from datetime import datetime
+
+# AWS S3 settings
+AWS_ACCESS_KEY = "DIN_AWS_ACCESS_KEY"
+AWS_SECRET_KEY = "DIN_AWS_SECRET_KEY"
+BUCKET_NAME = "elhandler"
+REGION = "eu-north-1"
+LOCAL_FILENAME = "latest_forecast.xlsx"
+
+def get_forecast():
+    # Forbind til S3 og hent nyeste fil
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=AWS_ACCESS_KEY,
+        aws_secret_access_key=AWS_SECRET_KEY,
+        region_name=REGION
+    )
+
+    response = s3.list_objects_v2(Bucket=BUCKET_NAME)
+    objects = response.get("Contents", [])
+    if not objects:
+        raise Exception("Ingen filer i bucket.")
+
+    # Find nyeste fil
+    nyeste = max(objects, key=lambda x: x["LastModified"])
+    s3.download_file(BUCKET_NAME, nyeste["Key"], LOCAL_FILENAME)
+
+    # Læs filen som dataframe
+    df = pd.read_excel(LOCAL_FILENAME)
+    return df
+
 def find_best_trade(df):
     best = {"spread": 0, "buy_hour": None, "sell_hour": None}
 
@@ -11,13 +43,11 @@ def find_best_trade(df):
                 best["buy_hour"] = int(buy_hour)
                 best["sell_hour"] = int(sell_hour)
 
-    if best["spread"] >= 50:  # eksempelregel – kan flyttes til rules.json
+    if best["spread"] >= 50:
         return best
     return None
-import pandas as pd
-from forecast_engine import get_forecast  # eller tilpas til hvor forecast kommer fra
 
 def run_model():
-    df = get_forecast()  # hent dataframe med ResidualLoad pr. time
+    df = get_forecast()
     result = find_best_trade(df)
     return result
