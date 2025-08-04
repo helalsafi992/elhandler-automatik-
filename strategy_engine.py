@@ -3,11 +3,11 @@ import pandas as pd
 from datetime import datetime
 
 # AWS S3 settings
-AWS_ACCESS_KEY = "DIN_AWS_ACCESS_KEY"
-AWS_SECRET_KEY = "DIN_AWS_SECRET_KEY"
+AWS_ACCESS_KEY = "AKIASVVAGJVE4D537KVL"
+AWS_SECRET_KEY = "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"
 BUCKET_NAME = "elhandler"
 REGION = "eu-north-1"
-LOCAL_FILENAME = "latest_forecast.xlsx"
+LOCAL_FILENAME = "05-08-2025.xlsx"
 
 def get_forecast():
     # Forbind til S3 og hent nyeste fil
